@@ -1,10 +1,9 @@
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
 
-
+import { PostStats } from "@/components/shared";
 import { multiFormatDateString } from "@/lib/utils";
 import { useUserContext } from "@/context/AuthContext";
-import PostStats from "./PostStats";
 
 type PostCardProps = {
   post: Models.Document;
@@ -19,9 +18,7 @@ const PostCard = ({ post }: PostCardProps) => {
     <div className="post-card">
       <div className="flex-between">
         <div className="flex items-center gap-3">
-            {/* this shows the user name  */}
           <Link to={`/profile/${post.creator.$id}`}>
-            {/* this shows the user account profile image  */}
             <img
               src={
                 post.creator?.imageUrl ||
@@ -47,11 +44,10 @@ const PostCard = ({ post }: PostCardProps) => {
             </div>
           </div>
         </div>
-        {/* this will only be visible if ur the one who created this post ,basically used to update the post */}
+
         <Link
           to={`/update-post/${post.$id}`}
-          className={`${user.id !== post.creator.$id && "hidden"}`}
-        >
+          className={`${user.id !== post.creator.$id && "hidden"}`}>
           <img
             src={"/assets/icons/edit.svg"}
             alt="edit"

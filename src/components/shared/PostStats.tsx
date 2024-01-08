@@ -8,7 +8,7 @@ import {
   useSavePost,
   useDeleteSavedPost,
   useGetCurrentUser,
-} from "@/lib/react-query/queriesAndMutations";
+} from "@/lib/react-query/queries";
 
 type PostStatsProps = {
   post: Models.Document;
@@ -73,8 +73,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
 
   return (
     <div
-      className={`flex justify-between items-center z-20 ${containerStyles}`}
-    >
+      className={`flex justify-between items-center z-20 ${containerStyles}`}>
       <div className="flex gap-2 mr-5">
         <img
           src={`${

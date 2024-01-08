@@ -1,31 +1,25 @@
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm } from "react-hook-form";
-// import * as z from "zod";
-// import { Button } from "@/components/ui/button";
-// import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage,
-// } from "@/components/ui/form";
-// import { Input } from "@/components/ui/input";
-// import { Textarea } from "../ui/textarea";
-// import FileUploader from "../shared/FileUploader";
-// import { PostValidation } from "@/lib/validation";
-// import { Models } from "appwrite";
-
-
 import * as z from "zod";
 import { Models } from "appwrite";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage,
-} from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Button,
+  Input,
+  Textarea,
+} from "@/components/ui";
 import { PostValidation } from "@/lib/validation";
 import { useToast } from "@/components/ui/use-toast";
 import { useUserContext } from "@/context/AuthContext";
-
-import {useCreatePost,useUpdatePost} from "@/lib/react-query/queriesAndMutations";
-import FileUploader from "../shared/FileUploader";
-import Loader from "../shared/Loader";
+import { FileUploader, Loader } from "@/components/shared";
+import { useCreatePost, useUpdatePost } from "@/lib/react-query/queries";
 
 type PostFormProps = {
   post?: Models.Document;
@@ -89,8 +83,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="flex flex-col gap-9 w-full  max-w-5xl"
-      >
+        className="flex flex-col gap-9 w-full  max-w-5xl">
         <FormField
           control={form.control}
           name="caption"
@@ -164,15 +157,13 @@ const PostForm = ({ post, action }: PostFormProps) => {
           <Button
             type="button"
             className="shad-button_dark_4"
-            onClick={() => navigate(-1)}
-          >
+            onClick={() => navigate(-1)}>
             Cancel
           </Button>
           <Button
             type="submit"
             className="shad-button_primary whitespace-nowrap"
-            disabled={isLoadingCreate || isLoadingUpdate}
-          >
+            disabled={isLoadingCreate || isLoadingUpdate}>
             {(isLoadingCreate || isLoadingUpdate) && <Loader />}
             {action} Post
           </Button>

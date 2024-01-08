@@ -1,9 +1,8 @@
 import { useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 
-
-// import { convertFileToUrl } from "@/lib/utils";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui";
+import { convertFileToUrl } from "@/lib/utils";
 
 type FileUploaderProps = {
   fieldChange: (files: File[]) => void;
@@ -12,16 +11,13 @@ type FileUploaderProps = {
 
 const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
   const [file, setFile] = useState<File[]>([]);
-
-  // this state is used to check if the file is uploaded or not
   const [fileUrl, setFileUrl] = useState<string>(mediaUrl);
 
-  // what to do when someone drops file here ,inthis function that logic is defined
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {
       setFile(acceptedFiles);
       fieldChange(acceptedFiles);
-    //   setFileUrl(convertFileToUrl(acceptedFiles[0]));
+      setFileUrl(convertFileToUrl(acceptedFiles[0]));
     },
     [file]
   );
@@ -36,8 +32,7 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
   return (
     <div
       {...getRootProps()}
-      className="flex flex-center flex-col bg-dark-3 rounded-xl cursor-pointer"
-    >
+      className="flex flex-center flex-col bg-dark-3 rounded-xl cursor-pointer">
       <input {...getInputProps()} className="cursor-pointer" />
 
       {fileUrl ? (

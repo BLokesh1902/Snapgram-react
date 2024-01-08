@@ -1,32 +1,29 @@
+//  You now have a fully accessible form that is type-safe with client-side validation zod is used for validation.
+// so what happens in this page is as soon as u click on the sign up button which has a type of submit present at the bottom of the page it will submit the entire form and that form is going to call the handlesubmit function which contains on onsubmit we we have a little top above that and this function will say what we will do after the form is submitted
+
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/shared/Loader";
 import { useToast } from "@/components/ui/use-toast";
 
 import { SigninValidation } from "@/lib/validation";
-import { useSignInAccount } from "@/lib/react-query/queriesAndMutations";
+import { useSignInAccount } from "@/lib/react-query/queries";
 import { useUserContext } from "@/context/AuthContext";
 
 const SigninForm = () => {
+  // so whie submiting the form we need to perform some actions so this is done here
   const { toast } = useToast();
   const navigate = useNavigate();
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
   // Query
-  const { mutateAsync: signInAccount, isPending } = useSignInAccount();
+  const { mutateAsync: signInAccount, isLoading } = useSignInAccount();
 
   const form = useForm<z.infer<typeof SigninValidation>>({
     resolver: zodResolver(SigninValidation),
@@ -41,7 +38,7 @@ const SigninForm = () => {
 
     if (!session) {
       toast({ title: "Login failed. Please try again." });
-
+      
       return;
     }
 
@@ -52,8 +49,9 @@ const SigninForm = () => {
 
       navigate("/");
     } else {
-      toast({ title: "Login failed. Please try again." });
-
+      // tost is a small popup that we use from shadcn ui
+      toast({ title: "Login failed. Please try again.", });
+      
       return;
     }
   };
@@ -71,8 +69,7 @@ const SigninForm = () => {
         </p>
         <form
           onSubmit={form.handleSubmit(handleSignin)}
-          className="flex flex-col gap-5 w-full mt-4"
-        >
+          className="flex flex-col gap-5 w-full mt-4">
           <FormField
             control={form.control}
             name="email"
@@ -102,7 +99,7 @@ const SigninForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            {isPending || isUserLoading ? (
+            {isLoading || isUserLoading ? (
               <div className="flex-center gap-2">
                 <Loader /> Loading...
               </div>
@@ -115,8 +112,7 @@ const SigninForm = () => {
             Don&apos;t have an account?
             <Link
               to="/sign-up"
-              className="text-primary-500 text-small-semibold ml-1"
-            >
+              className="text-primary-500 text-small-semibold ml-1">
               Sign up
             </Link>
           </p>

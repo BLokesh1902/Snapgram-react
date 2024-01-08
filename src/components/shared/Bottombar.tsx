@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { bottombarLinks } from "@/constants";
 
 const Bottombar = () => {
-  // this is sed to find out which page we are in and highlight the icon
   const { pathname } = useLocation();
 
   return (
@@ -16,8 +15,7 @@ const Bottombar = () => {
             to={link.route}
             className={`${
               isActive && "rounded-[10px] bg-primary-500 "
-            } flex-center flex-col gap-1 p-2 transition`}
-          >
+            } flex-center flex-col gap-1 p-2 transition`}>
             <img
               src={link.imgURL}
               alt={link.label}

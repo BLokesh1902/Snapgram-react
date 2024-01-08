@@ -1,27 +1,19 @@
-//  You now have a fully accessible form that is type-safe with client-side validation zod is used for validation.
-
-
-
-// so what happens in this page is as soon as u click on the sign up button which has a type of submit present at the bottom of the page it will submit the entire form and that form is going to call the handlesubmit function which contains on onsubmit we we have a little top above that and this function will say what we will do after the form is submitted
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/shared/Loader";
 import { useToast } from "@/components/ui/use-toast";
 
-import {useCreateUserAccount,useSignInAccount,} from "@/lib/react-query/queriesAndMutations";
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queries";
 import { SignupValidation } from "@/lib/validation";
 import { useUserContext } from "@/context/AuthContext";
 
-
 const SignupForm = () => {
-  // so whie submiting the form we need to perform some actions so this is done here
   const { toast } = useToast();
   const navigate = useNavigate();
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
@@ -37,22 +29,17 @@ const SignupForm = () => {
   });
 
   // Queries
-  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
-    useCreateUserAccount();
-  const { mutateAsync: signInAccount, isPending: isSigningInUser } =
-    useSignInAccount();
+  const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } = useCreateUserAccount();
+  const { mutateAsync: signInAccount, isLoading: isSigningInUser } = useSignInAccount();
 
   // Handler
   const handleSignup = async (user: z.infer<typeof SignupValidation>) => {
     try {
-      // so when submitted we need to create a new user account right and this function is specified in Library/appwrite/api.ts and inside that we wrote a function createnewuser
       const newUser = await createUserAccount(user);
-      
-      // after creating a new user in db we should check if the usee in present in the db or not
-      if (!newUser) {
-        // tost is a small popup that we use from shadcn ui
-        toast({ title: "Sign up failed. Please try again." });
 
+      if (!newUser) {
+        toast({ title: "Sign up failed. Please try again.", });
+        
         return;
       }
 
@@ -62,10 +49,10 @@ const SignupForm = () => {
       });
 
       if (!session) {
-        toast({ title: "Something went wrong. Please login your new account" });
-
+        toast({ title: "Something went wrong. Please login your new account", });
+        
         navigate("/sign-in");
-
+        
         return;
       }
 
@@ -76,8 +63,8 @@ const SignupForm = () => {
 
         navigate("/");
       } else {
-        toast({ title: "Login failed. Please try again." });
-
+        toast({ title: "Login failed. Please try again.", });
+        
         return;
       }
     } catch (error) {
@@ -99,8 +86,7 @@ const SignupForm = () => {
 
         <form
           onSubmit={form.handleSubmit(handleSignup)}
-          className="flex flex-col gap-5 w-full mt-4"
-        >
+          className="flex flex-col gap-5 w-full mt-4">
           <FormField
             control={form.control}
             name="name"
@@ -171,8 +157,7 @@ const SignupForm = () => {
             Already have an account?
             <Link
               to="/sign-in"
-              className="text-primary-500 text-small-semibold ml-1"
-            >
+              className="text-primary-500 text-small-semibold ml-1">
               Log in
             </Link>
           </p>
@@ -181,4 +166,5 @@ const SignupForm = () => {
     </Form>
   );
 };
+
 export default SignupForm;
